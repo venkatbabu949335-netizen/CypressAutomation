@@ -5,15 +5,17 @@ module.exports = defineConfig({
 
   e2e: {
     supportFile: "cypress/support/e2e.js", 
-     reporter: 'mochawesome',
-  reporterOptions: {
-    reportDir: 'cypress/reports',
-    overwrite: false,
-    html: true,
-    json: true
-  },
+  reporter: 'cypress-mochawesome-reporter',
+reporterOptions: {
+  reportDir: 'cypress/reports',
+  charts: true,
+  reportPageTitle: 'Test Report',
+  embeddedScreenshots: true,
+  inlineAssets: true
+},
     setupNodeEvents(on, config) {
       // implement node event listeners here
+      require('cypress-mochawesome-reporter/plugin')(on);
     },
   },
 });
