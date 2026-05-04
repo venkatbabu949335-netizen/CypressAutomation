@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Cypress artifacts
+cypress/videos/
+cypress/screenshots/
+cypress/reports/
+mochawesome-report/
+
+# Logs
+npm-debug.log*
+
+# Environment files
+.env
+
+# OS files
+.DS_Store
