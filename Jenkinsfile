@@ -1,38 +1,74 @@
 pipeline {
-    // Run this pipeline on any available Jenkins agent
-    agent any 
+    agent any
+
+    tools {
+        nodejs 'NodeJS'   // Configure NodeJS in Jenkins: Manage Jenkins → Global Tool Configuration
+    }
+
+    environment {
+        CYPRESS_CACHE_FOLDER = "${WORKSPACE}/.cypress-cache"
+    }
 
     stages {
-        stage('Build') {
+
+        stage('Checkout Code') {
             steps {
-                echo 'Building the application...'
-                // Add your build commands here, e.g., sh 'mvn clean install'
+                git branch: 'main',
+                url: 'https://github.com/venkatbabu949335-netizen/CypressAutomation.git'
             }
         }
-        stage('Test') {
+
+        stage('Install Dependencies') {
             steps {
-                echo 'Running tests...'
-                // Add your test commands here, e.g., sh 'make test'
+                sh '''
+                    node -v
+                    npm -v
+                    npm install
+                '''
             }
         }
-        stage('Deploy') {
+
+        stage('Install Cypress Binary') {
             steps {
-                echo 'Deploying the application...'
-                // Add your deployment commands here
+                sh '''
+                    npx cypress install
+                '''
+            }
+        }
+
+        stage('Run Cypress Tests') {
+            steps {
+                sh '''
+                    npx cypress run
+                '''
+            }
+        }
+
+        stage('Generate Report (Optional)') {
+            steps {
+                sh '''
+                    npm run report || true
+                '''
             }
         }
     }
-    
-    // Optional: Actions to take after the pipeline finishes
+
     post {
         always {
-            echo 'Pipeline execution finished.'
+            echo 'Archiving test results...'
+
+            archiveArtifacts artifacts: 'cypress/reports/**/*, cypress/screenshots/**/*, cypress/videos/**/*',
+                             allowEmptyArchive: true
+
+            junit 'cypress/results/*.xml'
         }
+
         success {
-            echo 'The build was successful!'
+            echo 'Cypress Tests Passed 🎉'
         }
+
         failure {
-            echo 'The build failed.'
+            echo 'Cypress Tests Failed ❌'
         }
     }
 }
