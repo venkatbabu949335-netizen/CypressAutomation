@@ -7,11 +7,7 @@ describe("Login Tests (CSV Driven)", () => {
     });
   });
 
-  it("Run login tests from CSV", () => {
-
-
-   
-    
+  it("Run login tests from CSV", () => { //login test
 
     data.forEach((row) => {
 
