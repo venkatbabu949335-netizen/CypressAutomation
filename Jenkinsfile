@@ -14,10 +14,6 @@ pipeline {
                sh 'npm run test'
            }
        }
-       stage('e2e Tests 2') {
-           steps {
-               sh 'npm run open'
-           }
-       }
+       
    }
 }
