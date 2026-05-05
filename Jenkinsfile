@@ -1,21 +1,23 @@
 pipeline {
-    agent any
+   agent any
 
-    stages {
+   tools {nodejs "nodejs21"}
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/venkatbabu949335-netizen/CypressAutomation.git'
-            }
-        }
-
-        stage('Run Cypress') {
-            steps {
-                sh '''
-                    npm install
-                    npx cypress run
-                '''
-            }
-        }
-    }
+   stages {
+       stage('Dependencies') {
+           steps {
+               sh 'npm i'
+           }
+       }
+       stage('e2e Tests') {
+           steps {
+               sh 'npm run cy:cloud'
+           }
+       }
+       stage('e2e Tests 2') {
+           steps {
+               sh 'npm run cy:run'
+           }
+       }
+   }
 }
