@@ -11,12 +11,12 @@ pipeline {
        }
        stage('e2e Tests') {
            steps {
-               sh 'npm run cy:cloud'
+               sh 'npm run test'
            }
        }
        stage('e2e Tests 2') {
            steps {
-               sh 'npm run cy:run'
+               sh 'npm run open'
            }
        }
    }
